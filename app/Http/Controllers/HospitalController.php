@@ -21,7 +21,9 @@ class HospitalController extends Controller
     {
         $aData['aaData'] = [];
 
-        $rs = DB::table('hospitals')->get();
+        $rs = DB::table('hospitals')
+            ->orderByDesc('id')
+            ->get();
         $no = 1;
         foreach ($rs as $row) {
             $aData['aaData'][] = [
