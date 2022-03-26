@@ -1,6 +1,9 @@
 $(document).ready(() => {
 
-    console.log('ok');
+    $('#rs_name').on('change', () => {
+        $("#tb_data").dataTable().api().ajax.url(`load-patient-${$('#rs_name').val()}`).load();
+    })
+
     $('#tb_data').DataTable({
         "bLengthChange": true,
         "responsive": true,
@@ -30,9 +33,14 @@ $(document).ready(() => {
                 "sClass": "left",
                 "bSortable": true
             },
+            {
+                "sWidth": "10%",
+                "sClass": "left",
+                "bSortable": true
+            },
         ],
         "sDom": 'Bfrtp',
-        "sAjaxSource": `load-rs`,
+        "sAjaxSource": `load-patient-${$('#rs_name').val()}`,
         "bServerSide": false,
         "sServerMethod": "GET",
         "aaSorting": [
@@ -49,11 +57,7 @@ $(document).ready(() => {
         },
         messages: {
             name: {
-                required: 'Nama Rumah Sakit <small class="text-danger">*Tidak boleh kosong</small>',
-            },
-            email: {
-                required: 'Email <small class="text-danger">*Tidak boleh kosong</small>',
-                email: 'Email <small class="text-danger">*Tidak valid</small>'
+                required: 'Nama Pasien <small class="text-danger">*Tidak boleh kosong</small>',
             },
             phone: {
                 required: 'No. Telp <small class="text-danger">*Tidak boleh kosong</small>',
@@ -61,12 +65,15 @@ $(document).ready(() => {
             address: {
                 required: 'Alamat <small class="text-danger">*Tidak boleh kosong</small>',
             },
+            hospital_id: {
+                required: '<small class="text-danger">*Tidak boleh kosong</small>',
+            },
         },
 
         submitHandler: function (form) {
             $.ajax({
                 type: 'POST',
-                url: `save-rs`,
+                url: `save-patient`,
                 data: $('#i-form').serialize(),
                 success: function (resp) {
                     $('.btnsubmit').prop('disabled', false);
@@ -107,7 +114,7 @@ $(document).ready(() => {
                         }).then((result) => {
                             /* Read more about handling dismissals below */
                             if (result.dismiss === Swal.DismissReason.timer) {
-                                $("#tb_data").dataTable().api().ajax.reload(null, false);
+                                $("#tb_data").dataTable().api().ajax.url(`load-patient-${$('#rs_name').val()}`).load();
                                 $('#i-form').trigger("reset");
                             }
                         })
@@ -135,11 +142,7 @@ $(document).ready(() => {
         },
         messages: {
             name: {
-                required: 'Nama Rumah Sakit <small class="text-danger">*Tidak boleh kosong</small>',
-            },
-            email: {
-                required: 'Email <small class="text-danger">*Tidak boleh kosong</small>',
-                email: 'Email <small class="text-danger">*Tidak valid</small>'
+                required: 'Nama Pasien <small class="text-danger">*Tidak boleh kosong</small>',
             },
             phone: {
                 required: 'No. Telp <small class="text-danger">*Tidak boleh kosong</small>',
@@ -147,12 +150,15 @@ $(document).ready(() => {
             address: {
                 required: 'Alamat <small class="text-danger">*Tidak boleh kosong</small>',
             },
+            hospital_id: {
+                required: '<small class="text-danger">*Tidak boleh kosong</small>',
+            },
         },
 
         submitHandler: function (form) {
             $.ajax({
                 type: 'POST',
-                url: `update-rs`,
+                url: `update-patient`,
                 data: $('#u-form').serialize(),
                 success: function (resp) {
                     $('.btnsubmit').prop('disabled', false);
@@ -193,7 +199,7 @@ $(document).ready(() => {
                         }).then((result) => {
                             /* Read more about handling dismissals below */
                             if (result.dismiss === Swal.DismissReason.timer) {
-                                $("#tb_data").dataTable().api().ajax.reload(null, false);
+                                $("#tb_data").dataTable().api().ajax.url(`load-patient-${$('#rs_name').val()}`).load();
                                 $('#u-form').trigger("reset");
                             }
                         })
@@ -215,11 +221,11 @@ $(document).ready(() => {
     });
 
     $('#tb_data').on('click', '.btn-edit', function () {
-        $.getJSON(`get-rs-${$(this).data('id')}`, (data) => {
+        $.getJSON(`get-patient-${$(this).data('id')}`, (data) => {
             $('#uid').val(data.id);
             $('#uname').val(data.name);
             $('#uaddress').val(data.address);
-            $('#uemail').val(data.email);
+            $('#uhospital_id').val(data.hospital_id);
             $('#uphone').val(data.phone);
         })
     })
@@ -240,7 +246,7 @@ $(document).ready(() => {
         }).then((result) => {
             if (result.value) {
                 //-------------------BELUM FIX---------delete in foreign check please ----------------------------------------------
-                $.getJSON(`delete-rs-${$(this).data('id')}`, (data) => {
+                $.getJSON(`delete-patient-${$(this).data('id')}`, (data) => {
                     Swal.fire({
                         title: "Berhasil!",
                         text: "",
@@ -250,7 +256,7 @@ $(document).ready(() => {
                         // allowEnterKey: false,
                         // allowOutsideClick: false,
                     });
-                    $("#tb_data").dataTable().api().ajax.reload(null, false);
+                    $("#tb_data").dataTable().api().ajax.url(`load-patient-${$('#rs_name').val()}`).load();
 
                 });
                 //-------------------BELUM FIX-------------------------------------------------------
