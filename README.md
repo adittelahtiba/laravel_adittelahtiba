@@ -1,14 +1,14 @@
 ## Instaling App
 
-import database in folder /File Database or create your own database
+Import database in folder /File Database or create your own database
 
-write php artisan migrate:fresh --seed in your terminal
+Write "php artisan migrate:fresh --seed" in your terminal
 
-this aplikasi use Seed and factory for initiate Data
+This app use factory and faker in Seed file to initiate Data
 
-for login, input usernam=admin and password admin, this user accout automatically created using seeder
+for login, input username=admin and password admin, this user accout is automatically created using seeder
 
-for extras, this app using jquery dataTables, jquery form validation and sweet alert.
+for extras, this app uses jquery dataTables, jquery form validation and sweet alert.
 
 thankyou.
 
