@@ -20,5 +20,8 @@ class DatabaseSeeder extends Seeder
             'email' => 'pangestuaditya.solihin@gmail.com',
             'password' => bcrypt('admin'),
         ]);
+        \App\Models\Patient::factory(40)->create();
+
+        \App\Models\Hospital::factory(15)->create();
     }
 }
